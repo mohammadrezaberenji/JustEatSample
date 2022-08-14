@@ -1,5 +1,6 @@
 package com.example.justeatsample.data.db
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.justeatsample.data.source.local_models.MenuItemsEntity
@@ -11,6 +12,7 @@ data class MenuItemDbModel(
     val name: String,
     val status: String,
     val imageUrl : String,
+    @ColumnInfo(name = "isFavorite")
     val isFavorite : Boolean,
     val averageProductPrice: Int,
     val bestMatch: Int,

@@ -5,12 +5,26 @@ data class MenuItemsEntity(
 )
 
 data class Restaurant(
-    val name: String,
+    var name: String,
     val sortingValues: SortingValues,
     val status: String,
-    val imageUrl : String,
-    val isFavorite : Boolean
-)
+    val imageUrl: String,
+    var isFavorite: Boolean
+) {
+    enum class Status(val status: String) {
+        OPEN("open"), CLOSED("closed"), ORDER_AHEAD("order ahead")
+
+    }
+
+    fun getStatus(): Int {
+        return when (status) {
+            "open" -> 2;
+            "order ahead" -> 1
+            "closed" -> 0
+            else -> -1
+        }
+    }
+}
 
 data class SortingValues(
     val averageProductPrice: Int,

@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.justeatsample.R
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.remote.apiModel.RestaurantResp
 import com.example.justeatsample.databinding.MenuItemAdapterBinding
@@ -54,14 +56,38 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
                     val layoutParams = ConstraintLayout.LayoutParams(
                         width, generatedImageHeight
                     )
-//                    layoutParams.dimensionRatio =
-//                        "H, ${resource.intrinsicWidth}:${resource.intrinsicHeight}"
 
                     holder.binding.menuIv.layoutParams = layoutParams
                     holder.binding.menuIv.requestLayout()
                     holder.binding.menuIv.setImageDrawable(resource)
                 }
             })
+
+        holder.binding.nameTv.text = list[position].name
+        holder.binding.statusTv.text = list[position].status
+        holder.binding.ratingBar.rating = list[position].sortingValues.ratingAverage.toFloat()
+        when (list[position].status) {
+            Restaurant.Status.OPEN.status, Restaurant.Status.ORDER_AHEAD.status -> {
+                holder.binding.statusTv.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.green
+                    )
+                )
+
+
+            }
+            Restaurant.Status.CLOSED.status -> {
+                holder.binding.statusTv.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.red_800
+                    )
+                )
+
+            }
+        }
+
 
     }
 

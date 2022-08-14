@@ -73,16 +73,21 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="8dp"
+                        android:id="@+id/nameTv"
                         android:gravity="center"
                         android:padding="16dp"
-                        android:text="sdfsdf" />
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textStyle="bold"
                         android:padding="16dp"
-                        android:text="dsfsdf" />
+                        android:id="@+id/statusTv"
+                    />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -93,7 +98,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="dsfsf"
+                            android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 

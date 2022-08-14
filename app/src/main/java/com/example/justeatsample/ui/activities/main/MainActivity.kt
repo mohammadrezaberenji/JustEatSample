@@ -2,9 +2,12 @@ package com.example.justeatsample.ui.activities.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.justeatsample.R
 import com.example.justeatsample.data.source.ResponseState
 import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         initObserver()
         viewModel.getList()
@@ -38,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 is ResponseState.Success -> {
                     Log.i(TAG, "initObserver: response state is ok ${it.data?.restaurants}")
                     initRecyclerView(arrayList = it.data?.restaurants ?: arrayListOf())
+                    viewModel.updateModel()
 
                 }
                 is ResponseState.Error -> {
@@ -66,4 +71,11 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         _binding = null
     }
+
+//    private fun changeStatusBar() {
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//        window.statusBarColor =
+//            ContextCompat.getColor(this, R.color.white)
+//    }
 }

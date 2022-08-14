@@ -5,8 +5,9 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/react_half_top.xml" value="0.213" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10374857584635427" />
-        <entry key="app/src/main/res/layout/menu_item_adapter.xml" value="0.413970947265625" />
+        <entry key="app/src/main/res/layout/menu_item_adapter.xml" value="0.5560562133789063" />
       </map>
     </option>
   </component>

@@ -97,8 +97,22 @@ class Repository @Inject constructor(private val webService: WebService, private
         }
     }
 
-    fun updateItem(entity: MenuItemsEntity) {
-//        dao.update(MenuItemDbModel())
+    suspend fun updateItem(restaurant: Restaurant) {
+        Log.i(TAG, "updateItem: ")
+        val model = MenuItemDbModel(
+            name = restaurant.name, status = restaurant.status,
+            imageUrl = restaurant.imageUrl,
+            isFavorite = restaurant.isFavorite,
+            averageProductPrice = restaurant.sortingValues.averageProductPrice,
+            bestMatch = restaurant.sortingValues.bestMatch,
+            deliveryCosts = restaurant.sortingValues.deliveryCosts,
+            distance = restaurant.sortingValues.distance,
+            minCost = restaurant.sortingValues.minCost,
+            newest = restaurant.sortingValues.newest,
+            popularity = restaurant.sortingValues.popularity,
+            ratingAverage = restaurant.sortingValues.ratingAverage
+        )
+        dao.update(model)
 
     }
 

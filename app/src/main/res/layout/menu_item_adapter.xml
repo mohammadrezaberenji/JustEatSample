@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
                 android:layout_marginBottom="-8dp"
-                app:cardBackgroundColor="@color/white_smoke"
+                app:cardBackgroundColor="@color/ultra_light_orange"
                 app:cardElevation="0dp"
                >
 

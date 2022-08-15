@@ -18,10 +18,10 @@ data class Restaurant(
 
     fun getStatus(): Int {
         return when (status) {
-            "open" -> 2;
+            "open" -> 0;
             "order ahead" -> 1
-            "closed" -> 0
-            else -> -1
+            "closed" -> 2
+            else -> 3
         }
     }
 }

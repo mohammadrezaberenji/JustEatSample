@@ -18,6 +18,8 @@ class Repository @Inject constructor(private val webService: WebService, private
 
     private val TAG = Repository::class.java.simpleName
 
+    private var list = ArrayList<MenuItemDbModel>()
+
     fun getList() = flow<ResponseState<MenuItemsEntity>> {
         try {
             emit(ResponseState.Loading)
@@ -67,7 +69,9 @@ class Repository @Inject constructor(private val webService: WebService, private
     }
 
     private suspend fun getItemsFromDb(): ArrayList<Restaurant> {
-        if (dao.getAllMenuItems().isNotEmpty()) {
+        list =
+            dao.getAllMenuItems() as ArrayList<MenuItemDbModel> /* = java.util.ArrayList<com.example.justeatsample.data.db.MenuItemDbModel> */
+        if (list.isNotEmpty()) {
             val list = ArrayList<Restaurant>()
             for (items in dao.getAllMenuItems()) {
                 list.add(
@@ -97,22 +101,9 @@ class Repository @Inject constructor(private val webService: WebService, private
         }
     }
 
-    suspend fun updateItem(restaurant: Restaurant) {
-        Log.i(TAG, "updateItem: ")
-        val model = MenuItemDbModel(
-            name = restaurant.name, status = restaurant.status,
-            imageUrl = restaurant.imageUrl,
-            isFavorite = restaurant.isFavorite,
-            averageProductPrice = restaurant.sortingValues.averageProductPrice,
-            bestMatch = restaurant.sortingValues.bestMatch,
-            deliveryCosts = restaurant.sortingValues.deliveryCosts,
-            distance = restaurant.sortingValues.distance,
-            minCost = restaurant.sortingValues.minCost,
-            newest = restaurant.sortingValues.newest,
-            popularity = restaurant.sortingValues.popularity,
-            ratingAverage = restaurant.sortingValues.ratingAverage
-        )
-        dao.update(model)
+    suspend fun updateItem(boolean: Boolean, id: Int) {
+        Log.i(TAG, "updateItem:  ")
+        dao.update(boolean, list[id].id)
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.justeatsample.ui.activities.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,12 +15,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.FieldPosition
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityVm @Inject constructor(private val repository: Repository) : ViewModel() {
-
-    private val list = ArrayList<Restaurant>()
 
 
     private val _items = MutableLiveData<ResponseState<MenuItemsEntity>>()
@@ -29,17 +29,18 @@ class MainActivityVm @Inject constructor(private val repository: Repository) : V
         viewModelScope.launch {
             repository.getList().collect() {
                 _items.postValue(it)
-                list.addAll(it.data?.restaurants ?: arrayListOf())
             }
         }
     }
 
-    fun updateModel() {
+    fun updateModel(boolean: Boolean , position : Int) {
         viewModelScope.launch {
-//            val item = list[0]
-//            item.name = "sedf"
-//            repository.updateItem(item)
+            Log.i("TAG", "updateModel: is favorite : ")
+            repository.updateItem(boolean , position)
+
         }
     }
+
+
 
 }

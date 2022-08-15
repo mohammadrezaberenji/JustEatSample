@@ -15,6 +15,6 @@ interface Dao {
     @Insert
     suspend fun insert(menuItemDbModel: MenuItemDbModel)
 
-    @Update
-    suspend fun update(menuItemDbModel: MenuItemDbModel)
+    @Query("UPDATE menuitemdbmodel SET isFavorite =:isFavorite WHERE id =:id")
+    suspend fun update(isFavorite: Boolean, id: Int)
 }

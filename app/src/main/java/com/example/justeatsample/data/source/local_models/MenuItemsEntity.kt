@@ -1,14 +1,34 @@
 package com.example.justeatsample.data.source.local_models
 
+import android.util.Log
+
 data class MenuItemsEntity(
     val restaurants: ArrayList<Restaurant>
-)
+) {
+    fun getSortedList(): ArrayList<Restaurant> {
+        val finalList = ArrayList<Restaurant>()
+
+        val list = restaurants.filter { it.isFavorite } as ArrayList
+        list.sortBy { it.getStatus() }
+
+        val others = restaurants.filter { !it.isFavorite } as ArrayList
+        others.sortBy { it.getStatus() }
+        if (list.isNotEmpty())
+            finalList.addAll(list)
+        if (others.isNotEmpty())
+            finalList.addAll(others)
+        Log.i("TAG", "getSortedList: other : final list :${finalList.size}")
+
+        return finalList
+    }
+}
 
 data class Restaurant(
     var name: String,
     val sortingValues: SortingValues,
     val status: String,
     val imageUrl: String,
+    val id : String,
     var isFavorite: Boolean
 ) {
     enum class Status(val status: String) {
@@ -24,6 +44,8 @@ data class Restaurant(
             else -> 3
         }
     }
+
+
 }
 
 data class SortingValues(

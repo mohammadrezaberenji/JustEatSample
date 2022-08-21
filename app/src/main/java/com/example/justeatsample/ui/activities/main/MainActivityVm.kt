@@ -33,10 +33,10 @@ class MainActivityVm @Inject constructor(private val repository: Repository) : V
         }
     }
 
-    fun updateModel(boolean: Boolean , position : Int) {
+    fun updateModel(boolean: Boolean , id : String) {
         viewModelScope.launch {
             Log.i("TAG", "updateModel: is favorite : ")
-            repository.updateItem(boolean , position)
+            repository.updateItem(boolean ,id )
 
         }
     }

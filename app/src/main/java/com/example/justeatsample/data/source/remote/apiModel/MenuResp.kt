@@ -8,6 +8,7 @@ data class RestaurantResp(
     val name: String,
     val sortingValues: SortingValuesResp,
     val status: String,
+    val id : String,
     val imageUrl : String
 )
 

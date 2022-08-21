@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.items.observe(this) {
             when (it) {
                 is ResponseState.Success -> {
-                    Log.i(TAG, "initObserver: response state is ok ${it.data?.restaurants}")
-                    itemsList = it.data?.restaurants ?: arrayListOf()
-                    initRecyclerView(arrayList = itemsList)
+                    Log.i(TAG, "initObserver: response state is ok ${it.data?.getSortedList()}")
+                    itemsList = it.data?.getSortedList() ?: arrayListOf()
+                    initRecyclerView()
 //                    viewModel.updateModel()
 
                 }
@@ -59,19 +59,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView(arrayList: ArrayList<Restaurant>) {
+    private fun initRecyclerView() {
         Log.i(TAG, "initRecyclerView: ")
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
-        val list = itemsList.filter { it.isFavorite } as ArrayList
-        list.sortBy { it.getStatus() }
+        Log.i(TAG, "initRecyclerView: items")
 
-        val others = itemsList.filter { !it.isFavorite } as ArrayList
-        others.sortBy { it.getStatus() }
-
-        itemsList.clear()
-        itemsList.addAll(list)
-        itemsList.addAll(others)
 //
 //         list.addAll(others)
 //        itemsList.removeAll(list.toSet())
@@ -92,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         val model = item as Restaurant
         itemsList[position].isFavorite = !itemsList[position].isFavorite
         adapter.setNewData(position)
-        viewModel.updateModel(itemsList.get(position).isFavorite, position)
+        viewModel.updateModel(itemsList.get(position).isFavorite, itemsList[position].id)
 
     }
 

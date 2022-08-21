@@ -11,9 +11,11 @@ import com.example.justeatsample.data.source.local_models.SortingValues
 data class MenuItemDbModel(
     val name: String,
     val status: String,
-    val imageUrl : String,
+    val imageUrl: String,
     @ColumnInfo(name = "isFavorite")
-    val isFavorite : Boolean,
+    val isFavorite: Boolean,
+    @ColumnInfo(name = "uuid")
+    val uuid: String,
     val averageProductPrice: Int,
     val bestMatch: Int,
     val deliveryCosts: Int,
@@ -23,7 +25,8 @@ data class MenuItemDbModel(
     val popularity: Int,
     val ratingAverage: Double
 
-){
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 
 }

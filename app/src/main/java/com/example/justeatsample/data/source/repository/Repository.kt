@@ -8,9 +8,7 @@ import com.example.justeatsample.data.source.ResponseState
 import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortingValues
-import com.example.justeatsample.data.source.remote.apiModel.MenuResp
 import com.example.justeatsample.data.source.remote.webService.WebService
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -61,7 +59,8 @@ class Repository @Inject constructor(private val webService: WebService, private
                     newest = items.sortingValues.newest,
                     popularity = items.sortingValues.popularity,
                     ratingAverage = items.sortingValues.ratingAverage,
-                    deliveryCosts = items.sortingValues.deliveryCosts
+                    deliveryCosts = items.sortingValues.deliveryCosts,
+                    uuid = items.id
                 )
             )
         }
@@ -71,6 +70,7 @@ class Repository @Inject constructor(private val webService: WebService, private
     private suspend fun getItemsFromDb(): ArrayList<Restaurant> {
         list =
             dao.getAllMenuItems() as ArrayList<MenuItemDbModel> /* = java.util.ArrayList<com.example.justeatsample.data.db.MenuItemDbModel> */
+
         if (list.isNotEmpty()) {
             val list = ArrayList<Restaurant>()
             for (items in dao.getAllMenuItems()) {
@@ -80,6 +80,7 @@ class Repository @Inject constructor(private val webService: WebService, private
                         status = items.status,
                         isFavorite = items.isFavorite,
                         imageUrl = items.imageUrl,
+                        id = items.uuid,
                         sortingValues = SortingValues(
                             averageProductPrice = items.averageProductPrice,
                             bestMatch = items.bestMatch,
@@ -101,9 +102,9 @@ class Repository @Inject constructor(private val webService: WebService, private
         }
     }
 
-    suspend fun updateItem(boolean: Boolean, id: Int) {
+    suspend fun updateItem(boolean: Boolean, id: String) {
         Log.i(TAG, "updateItem:  ")
-        dao.update(boolean, list[id].id)
+        dao.update(boolean, id)
 
     }
 

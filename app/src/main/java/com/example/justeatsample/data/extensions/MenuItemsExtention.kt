@@ -10,6 +10,7 @@ import com.example.justeatsample.data.source.remote.apiModel.SortingValuesResp
 
 fun MenuResp.toMenuItemsEntity(): MenuItemsEntity {
     val list = ArrayList<Restaurant>()
+
     for (items in this.restaurants) {
         list.add(
             Restaurant(
@@ -17,6 +18,7 @@ fun MenuResp.toMenuItemsEntity(): MenuItemsEntity {
                 sortingValues = items.sortingValues.toSortingValues(),
                 status = items.status,
                 imageUrl = items.imageUrl,
+                id = items.id,
                 isFavorite = false
             )
         )

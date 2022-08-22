@@ -2,18 +2,15 @@ package com.example.justeatsample.ui.activities.main
 
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.ResponseState
-import com.example.justeatsample.data.source.local_models.MenuItemsEntity
-import com.example.justeatsample.data.source.local_models.Restaurant
-import com.example.justeatsample.data.source.remote.apiModel.RestaurantResp
 import com.example.justeatsample.databinding.ActivityMainBinding
 import com.example.justeatsample.ui.adapters.MenuAdapter
+import com.example.justeatsample.ui.bottomSheets.SortingValuesBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,15 +22,14 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private val viewModel: MainActivityVm by viewModels()
     private val adapter = MenuAdapter(onItemClick = ::onItemClick)
-    private var itemsList = ArrayList<Restaurant>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
         initObserver()
         viewModel.getList()
+        setUpToolbar()
     }
 
     private fun initObserver() {
@@ -41,8 +37,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.items.observe(this) {
             when (it) {
                 is ResponseState.Success -> {
-                    Log.i(TAG, "initObserver: response state is ok ${it.data?.getSortedList()}")
-                    itemsList = it.data?.getSortedList() ?: arrayListOf()
+//                    Log.i(TAG, "initObserver: response state is ok ${it.data?.getSortedList()}")
                     initRecyclerView()
 //                    viewModel.updateModel()
 
@@ -64,13 +59,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
         Log.i(TAG, "initRecyclerView: items")
-
-//
-//         list.addAll(others)
-//        itemsList.removeAll(list.toSet())
-//        itemsList.sortedBy { it.getStatus() }
-//        list.addAll(itemsList)
-        adapter.setList(itemsList)
+        adapter.setList(viewModel.listOfRestaurants)
 
     }
 
@@ -80,13 +69,33 @@ class MainActivity : AppCompatActivity() {
         _binding = null
     }
 
-    private fun onItemClick(item: Any, position: Int) {
+    private fun onItemClick(position: Int) {
         Log.i(TAG, "onItemClick: position :$position")
-        val model = item as Restaurant
-        itemsList[position].isFavorite = !itemsList[position].isFavorite
-        adapter.setNewData(position)
-        viewModel.updateModel(itemsList.get(position).isFavorite, itemsList[position].id)
+        viewModel.listOfRestaurants[position].isFavorite =
+            !viewModel.listOfRestaurants[position].isFavorite
+        adapter.likeItem(position)
+        viewModel.updateModel(
+            viewModel.listOfRestaurants[position].isFavorite,
+            viewModel.listOfRestaurants[position].id
+        )
 
+    }
+
+    private fun setUpToolbar() {
+        binding.toolbar.filterIv.isVisible = true
+        binding.toolbar.titleTv.text = getString(R.string.menu)
+        binding.toolbar.filterIv.setOnClickListener {
+            Log.i(TAG, "setUpToolbar: list : ${viewModel.listOfSortValues}")
+            val bottomSheet = SortingValuesBottomSheet(viewModel.listOfSortValues, ::filerApplied)
+            bottomSheet.show(supportFragmentManager, "tag")
+        }
+    }
+
+    private fun filerApplied(position: Int) {
+        Log.i(TAG, "filerApplied: which sort they want : ${viewModel.listOfSortValues[position]}")
+        viewModel.applyChangesToSortList(position)
+        Log.i(TAG, "filerApplied: viewModel : sorted List : ${viewModel.filterList()}")
+        adapter.setList(viewModel.filterList())
     }
 
 //    private fun changeStatusBar() {

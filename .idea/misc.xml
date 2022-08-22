@@ -6,8 +6,11 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/react_half_top.xml" value="0.213" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.10374857584635427" />
-        <entry key="app/src/main/res/layout/menu_item_adapter.xml" value="0.5560562133789063" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/menu_item_adapter.xml" value="0.5103359173126615" />
+        <entry key="app/src/main/res/layout/sort_value_item_adapter.xml" value="0.49636962890625" />
+        <entry key="app/src/main/res/layout/sorting_values_bottom_sheet.xml" value="0.27914021809895834" />
+        <entry key="app/src/main/res/layout/toolbar_layout.xml" value="0.5" />
       </map>
     </option>
   </component>

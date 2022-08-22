@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">JustEatSample</string>
+    <string name="reset">reset</string>
+    <string name="show_result">show_result</string>
+    <string name="menu">menu</string>
+    <string name="detail">detail</string>
+
 </resources>

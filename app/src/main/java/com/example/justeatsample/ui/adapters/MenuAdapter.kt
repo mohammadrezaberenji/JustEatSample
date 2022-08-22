@@ -6,24 +6,50 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.util.pool.FactoryPools
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.local_models.Restaurant
+import com.example.justeatsample.data.source.local_models.SortValueItem
 import com.example.justeatsample.data.source.remote.apiModel.RestaurantResp
 import com.example.justeatsample.databinding.MenuItemAdapterBinding
 import com.example.justeatsample.utils.ItemClickListener
 
-class MenuAdapter(private val onItemClick: (item: Any, position: Int) -> Unit) :
+class MenuAdapter(private val onItemClick: (position: Int) -> Unit) :
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
-    private var list = ArrayList<Restaurant>()
+//    private var list = ArrayList<Restaurant>()
 
     private val TAG = MenuAdapter::class.java.simpleName
+
+
+    private val diffCallback = object : DiffUtil.ItemCallback<Restaurant>() {
+        override fun areItemsTheSame(
+            oldItem: Restaurant,
+            newItem: Restaurant
+        ): Boolean {
+            Log.i(TAG, "areItemsTheSame: old item : $oldItem")
+            Log.i(TAG, "areItemsTheSame: new item : $newItem")
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(
+            oldItem: Restaurant,
+            newItem: Restaurant
+        ): Boolean {
+            Log.i(TAG, "areContentsTheSame: old item : $oldItem")
+            Log.i(TAG, "areContentsTheSame: old item : $newItem")
+            return oldItem == newItem
+        }
+    }
+
+    private val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -37,7 +63,7 @@ class MenuAdapter(private val onItemClick: (item: Any, position: Int) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(holder.itemView.context)
-            .load(list[position].imageUrl)
+            .load(differ.currentList[position].imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true)
             .into(object : CustomTarget<Drawable?>() {
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -66,7 +92,7 @@ class MenuAdapter(private val onItemClick: (item: Any, position: Int) -> Unit) :
                 }
             })
 
-        if (list[position].isFavorite) {
+        if (differ.currentList[position].isFavorite) {
             holder.binding.likeBtn.setImageDrawable(
                 ContextCompat.getDrawable(
                     holder.itemView.context,
@@ -87,13 +113,14 @@ class MenuAdapter(private val onItemClick: (item: Any, position: Int) -> Unit) :
         }
 
 
-        holder.binding.nameTv.text = list[position].name
-        holder.binding.statusTv.text = list[position].status
-        holder.binding.ratingBar.rating = list[position].sortingValues.ratingAverage.toFloat()
+        holder.binding.nameTv.text = differ.currentList[position].name
+        holder.binding.statusTv.text = differ.currentList[position].status
+        holder.binding.ratingBar.rating =
+            differ.currentList[position].sortingValues.ratingAverage.toFloat()
         holder.binding.likeBtn.setOnClickListener {
-            onItemClick.invoke(list[position], position)
+            onItemClick.invoke(position)
         }
-        when (list[position].status) {
+        when (differ.currentList[position].status) {
             Restaurant.Status.OPEN.status, Restaurant.Status.ORDER_AHEAD.status -> {
                 holder.binding.statusTv.setTextColor(
                     ContextCompat.getColor(
@@ -119,50 +146,23 @@ class MenuAdapter(private val onItemClick: (item: Any, position: Int) -> Unit) :
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return differ.currentList.size
     }
+
+//    fun setList(arrayList: ArrayList<Restaurant>) {
+//        list = arrayList
+//
+//    }
 
     fun setList(arrayList: ArrayList<Restaurant>) {
-        list = arrayList
-
+        differ.submitList(arrayList)
     }
 
-    fun setNewData(position: Int) {
-        Log.i(TAG, "setNewData: ")
+    fun likeItem(position: Int) {
         notifyItemChanged(position)
-        Log.i(TAG, "setNewData: list size : ${list.size}")
-//        val diffCallback = DiffUtilCallback(list, newData)
-//        val diffResult = DiffUtil.calculateDiff(diffCallback)
-//        Log.i(TAG, "setNewData: diff result $diffResult ")
-//        list = newData as ArrayList<Restaurant>
-//        Log.i(TAG, "setNewData: list size : ${list.size}")
-//        diffResult.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(val binding: MenuItemAdapterBinding) : RecyclerView.ViewHolder(binding.root)
 
 
-    class DiffUtilCallback(
-        private val oldList: List<Restaurant>,
-        private val newList: List<Restaurant>
-    ) :
-        DiffUtil.Callback() {
-
-        override fun getOldListSize(): Int = oldList.size
-
-        override fun getNewListSize(): Int = newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList[oldItemPosition]
-            val newItem = newList[newItemPosition]
-            return oldItem.javaClass == newItem.javaClass
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList[oldItemPosition]
-            val newItem = newList[newItemPosition]
-
-            return oldItem.hashCode() == newItem.hashCode()
-        }
-    }
 }

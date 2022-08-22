@@ -10,8 +10,9 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white_smoke">#FDFFFC</color>
     <color name="orange">#FF8400</color>
-    <color name="ultra_light_orange">#ECEAE8</color>
+    <color name="ultra_light_orange">#fcfcfa</color>
     <color name="green">#35944F</color>
     <color name="red_800">#DE3B26</color>
+    <color name="light_grey">#f7f7f5</color>
 
 </resources>

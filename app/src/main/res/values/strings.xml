@@ -4,5 +4,18 @@
     <string name="show_result">show_result</string>
     <string name="menu">menu</string>
     <string name="detail">detail</string>
+    <string name="favorite_state">favorite state</string>
+    <string name="is_fav">Your favorite</string>
+    <string name="not_fave">Is Not your favorite</string>
+    <string name="name">name</string>
+    <string name="status">status</string>
+    <string name="average_product_price">average product price</string>
+    <string name="best_match">best match</string>
+    <string name="delivery_costs">delivery costs</string>
+    <string name="distance">distance</string>
+    <string name="min_cost">min_cost</string>
+    <string name="newest">newest</string>
+    <string name="popularity">popularity</string>
+    <string name="rating_average">rating average</string>
 
 </resources>

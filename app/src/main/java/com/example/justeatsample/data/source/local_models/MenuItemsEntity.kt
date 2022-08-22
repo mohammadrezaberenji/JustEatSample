@@ -1,6 +1,7 @@
 package com.example.justeatsample.data.source.local_models
 
 import android.util.Log
+import java.io.Serializable
 
 data class MenuItemsEntity(
     val restaurants: ArrayList<Restaurant>
@@ -94,7 +95,7 @@ data class Restaurant(
     val imageUrl: String,
     val id: String,
     var isFavorite: Boolean
-) {
+) : Serializable {
     enum class Status(val status: String) {
         OPEN("open"), CLOSED("closed"), ORDER_AHEAD("order ahead")
 
@@ -125,4 +126,4 @@ data class SortingValues(
     val newest: Int,
     val popularity: Int,
     val ratingAverage: Double
-)
+) : Serializable

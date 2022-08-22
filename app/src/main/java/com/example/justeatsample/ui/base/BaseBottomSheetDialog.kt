@@ -19,7 +19,7 @@ abstract class BaseBottomSheetDialog : BottomSheetDialogFragment() {
             if (frameLayout != null) {
                 val bottomSheetBehavior = BottomSheetBehavior.from(frameLayout)
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                bottomSheetBehavior.peekHeight = view?.measuredHeight ?:0
+//                bottomSheetBehavior.peekHeight = view?.measuredHeight ?:0
 
             }
         }

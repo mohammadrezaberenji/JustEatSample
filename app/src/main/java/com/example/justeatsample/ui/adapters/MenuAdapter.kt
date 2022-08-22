@@ -13,15 +13,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.bumptech.glide.util.pool.FactoryPools
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.local_models.Restaurant
-import com.example.justeatsample.data.source.local_models.SortValueItem
-import com.example.justeatsample.data.source.remote.apiModel.RestaurantResp
 import com.example.justeatsample.databinding.MenuItemAdapterBinding
-import com.example.justeatsample.utils.ItemClickListener
 
-class MenuAdapter(private val onItemClick: (position: Int) -> Unit) :
+class MenuAdapter(
+    private val onLickClick: (position: Int) -> Unit,
+    private val onMenuItemClick: (position: Int) -> Unit
+) :
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
 //    private var list = ArrayList<Restaurant>()
@@ -118,7 +117,10 @@ class MenuAdapter(private val onItemClick: (position: Int) -> Unit) :
         holder.binding.ratingBar.rating =
             differ.currentList[position].sortingValues.ratingAverage.toFloat()
         holder.binding.likeBtn.setOnClickListener {
-            onItemClick.invoke(position)
+            onLickClick.invoke(position)
+        }
+        holder.binding.cardItem.setOnClickListener {
+            onMenuItemClick.invoke(position)
         }
         when (differ.currentList[position].status) {
             Restaurant.Status.OPEN.status, Restaurant.Status.ORDER_AHEAD.status -> {

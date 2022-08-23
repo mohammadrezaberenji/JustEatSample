@@ -83,18 +83,18 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
             }
 
             Restaurant.SortingValuesEnum.DELIVERY_COST -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.deliveryCosts })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.deliveryCosts })
+                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.deliveryCosts })
+                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.deliveryCosts })
             }
 
             Restaurant.SortingValuesEnum.DISTANCE -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.distance })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.distance })
+                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.distance })
+                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.distance })
             }
 
             Restaurant.SortingValuesEnum.MIN_COST -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.minCost })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.minCost })
+                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.minCost })
+                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.minCost })
             }
 
             Restaurant.SortingValuesEnum.NEW -> {

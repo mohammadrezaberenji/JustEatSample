@@ -23,7 +23,6 @@ class MenuAdapter(
 ) :
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
-//    private var list = ArrayList<Restaurant>()
 
     private val TAG = MenuAdapter::class.java.simpleName
 
@@ -33,8 +32,6 @@ class MenuAdapter(
             oldItem: Restaurant,
             newItem: Restaurant
         ): Boolean {
-            Log.i(TAG, "areItemsTheSame: old item : $oldItem")
-            Log.i(TAG, "areItemsTheSame: new item : $newItem")
             return oldItem == newItem
         }
 
@@ -42,8 +39,6 @@ class MenuAdapter(
             oldItem: Restaurant,
             newItem: Restaurant
         ): Boolean {
-            Log.i(TAG, "areContentsTheSame: old item : $oldItem")
-            Log.i(TAG, "areContentsTheSame: old item : $newItem")
             return oldItem == newItem
         }
     }
@@ -73,7 +68,6 @@ class MenuAdapter(
                     resource: Drawable,
                     transition: Transition<in Drawable?>?
                 ) {
-                    Log.d(TAG, "onResourceReady: ")
                     val width =
                         holder.itemView.context.getResources().getDisplayMetrics().widthPixels;
                     val aspectRation = resource.intrinsicHeight
@@ -111,7 +105,9 @@ class MenuAdapter(
                 ContextCompat.getColorStateList(holder.itemView.context, R.color.black)
         }
 
-
+        holder.binding.distanceTv.text =
+            differ.currentList[position].sortingValues.distance.toString().plus(" ")
+                .plus(holder.itemView.context.getString(R.string.mile))
         holder.binding.nameTv.text = differ.currentList[position].name
         holder.binding.statusTv.text = differ.currentList[position].status
         holder.binding.ratingBar.rating =
@@ -151,10 +147,6 @@ class MenuAdapter(
         return differ.currentList.size
     }
 
-//    fun setList(arrayList: ArrayList<Restaurant>) {
-//        list = arrayList
-//
-//    }
 
     fun setList(arrayList: ArrayList<Restaurant>) {
         differ.submitList(arrayList)

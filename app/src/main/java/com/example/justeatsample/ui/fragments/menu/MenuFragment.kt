@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ethanhua.skeleton.Skeleton
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.ResponseState
 import com.example.justeatsample.databinding.FragmentMenuBinding
@@ -100,9 +101,7 @@ class MenuFragment : Fragment() {
         viewModel.items.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseState.Success -> {
-//                    Log.i(TAG, "initObserver: response state is ok ${it.data?.getSortedList()}")
                     initRecyclerView()
-//                    viewModel.updateModel()
 
                 }
                 is ResponseState.Error -> {
@@ -110,6 +109,9 @@ class MenuFragment : Fragment() {
                 }
 
                 is ResponseState.Loading -> {
+//                    val skeleton = Skeleton.bind(binding.recyclerView)
+//                        .load(R.layout.menu_item_adapter)
+//                    skeleton.show()
 
                 }
 
@@ -139,6 +141,7 @@ class MenuFragment : Fragment() {
 
     override fun onDestroyView() {
         Log.i(TAG, "onDestroyView: ")
+        _binding = null
         super.onDestroyView()
     }
 

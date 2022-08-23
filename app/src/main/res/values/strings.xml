@@ -17,5 +17,6 @@
     <string name="newest">newest</string>
     <string name="popularity">popularity</string>
     <string name="rating_average">rating average</string>
+    <string name="mile">mile</string>
 
 </resources>

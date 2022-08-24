@@ -20,6 +20,7 @@ import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.databinding.FragmentDetailsPageBinding
 import com.example.justeatsample.ui.adapters.DetailsPageAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class DetailsPageFragment : Fragment() {
@@ -147,13 +148,12 @@ class DetailsPageFragment : Fragment() {
                     resource: Drawable,
                     transition: Transition<in Drawable?>?
                 ) {
-                    Log.d(TAG, "onResourceReady: ")
                     val width =
-                        requireContext().getResources().getDisplayMetrics().widthPixels;
+                        requireContext().resources.displayMetrics.widthPixels;
                     val aspectRation = resource.intrinsicHeight
                         .toFloat() / resource.intrinsicWidth.toFloat()
 
-                    val generatedImageHeight = Math.round(width * aspectRation)
+                    val generatedImageHeight = (width * aspectRation).roundToInt()
 
                     val layoutParams = ConstraintLayout.LayoutParams(
                         width, generatedImageHeight

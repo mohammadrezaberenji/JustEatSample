@@ -62,7 +62,6 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
     }
 
     fun filterList(): ArrayList<Restaurant> {
-        Log.i(TAG, "filterList: tag : $filterTag")
 
         val finalList = ArrayList<Restaurant>()
 
@@ -124,14 +123,10 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
 
     }
 
-    override fun onCleared() {
-        Log.i(TAG, "onCleared: ")
-        super.onCleared()
-    }
+
 
     fun updateModel(boolean: Boolean, id: String) {
         viewModelScope.launch {
-            Log.i(TAG, "updateModel: is favorite : ")
             repository.updateItem(boolean, id)
 
         }

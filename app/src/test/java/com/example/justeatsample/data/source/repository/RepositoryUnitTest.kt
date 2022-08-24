@@ -7,7 +7,6 @@ import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortingValues
 import com.example.justeatsample.data.source.remote.webService.WebService
-import com.example.justeatsample.data.source.repository.RepositoryImp
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

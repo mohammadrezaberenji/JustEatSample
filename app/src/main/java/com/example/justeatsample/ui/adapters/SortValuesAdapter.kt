@@ -14,7 +14,6 @@ class SortValuesAdapter(
 ) :
     RecyclerView.Adapter<SortValuesAdapter.ViewHolder>() {
 
-    private val TAG = SortValuesAdapter::class.java.simpleName
 
 
     private val diffCallback = object : DiffUtil.ItemCallback<SortValueItem>() {
@@ -55,7 +54,6 @@ class SortValuesAdapter(
         holder: ViewHolder,
         position: Int,
     ) {
-        Log.i(TAG, "onBindViewHolder: ")
         holder.binding.sortValueTv.text = differ.currentList[position].name
         holder.binding.radioBtn.isChecked = differ.currentList[position].isSelected
         holder.binding.cardView.setOnClickListener {

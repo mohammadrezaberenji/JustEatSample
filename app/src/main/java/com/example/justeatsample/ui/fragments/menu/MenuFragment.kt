@@ -36,22 +36,18 @@ class MenuFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.i(TAG, "onCreateView: ")
         _binding =
             FragmentMenuBinding.inflate(LayoutInflater.from(inflater.context), container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.i(TAG, "onViewCreated: ")
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.listOfRestaurants.isNotEmpty()) {
-            Log.i(TAG, "onViewCreated: bundle is not null : ${viewModel.listOfRestaurants}")
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.adapter = adapter
             adapter.setList(viewModel.listOfRestaurants)
         } else {
-            Log.i(TAG, "onViewCreated: bundle is null")
             initObserver()
             viewModel.getList()
         }
@@ -62,13 +58,11 @@ class MenuFragment : Fragment() {
     }
 
     override fun onResume() {
-        Log.i(TAG, "onResume: ")
         super.onResume()
     }
 
 
     private fun onItemClick(position: Int) {
-        Log.i(TAG, "onItemClick: position :$position")
         viewModel.listOfRestaurants[position].isFavorite =
             !viewModel.listOfRestaurants[position].isFavorite
         adapter.likeItem(position)
@@ -83,21 +77,17 @@ class MenuFragment : Fragment() {
         binding.toolbar.filterIv.isVisible = true
         binding.toolbar.titleTv.text = getString(R.string.menu)
         binding.toolbar.filterIv.setOnClickListener {
-            Log.i(TAG, "setUpToolbar: list : ${viewModel.listOfSortValues}")
             val bottomSheet = SortingValuesBottomSheet(viewModel.listOfSortValues, ::filerApplied)
             bottomSheet.show(childFragmentManager, "tag")
         }
     }
 
     private fun filerApplied(position: Int) {
-        Log.i(TAG, "filerApplied: which sort they want : ${viewModel.listOfSortValues[position]}")
         viewModel.applyChangesToSortList(position)
-        Log.i(TAG, "filerApplied: viewModel : sorted List : ${viewModel.filterList()}")
         adapter.setList(viewModel.filterList())
     }
 
     private fun initObserver() {
-        Log.i(TAG, "initObserver: init observer")
         viewModel.items.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseState.Success -> {
@@ -130,7 +120,6 @@ class MenuFragment : Fragment() {
     }
 
     private fun onMenuItemClick(position: Int) {
-        Log.i(TAG, "onMenuItemClick: position :$position")
         findNavController().navigate(
             MenuFragmentDirections.actionToDetailsFragment(
                 viewModel.listOfRestaurants[position]
@@ -140,15 +129,10 @@ class MenuFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        Log.i(TAG, "onDestroyView: ")
         _binding = null
         super.onDestroyView()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("salam", viewModel.listOfRestaurants)
-    }
 
 
 }

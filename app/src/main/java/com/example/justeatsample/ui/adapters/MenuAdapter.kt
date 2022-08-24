@@ -1,7 +1,6 @@
 package com.example.justeatsample.ui.adapters
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +15,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.databinding.MenuItemAdapterBinding
+import kotlin.math.roundToInt
 
 class MenuAdapter(
     private val onLickClick: (position: Int) -> Unit,
@@ -24,7 +24,6 @@ class MenuAdapter(
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
 
-    private val TAG = MenuAdapter::class.java.simpleName
 
 
     private val diffCallback = object : DiffUtil.ItemCallback<Restaurant>() {
@@ -69,11 +68,11 @@ class MenuAdapter(
                     transition: Transition<in Drawable?>?
                 ) {
                     val width =
-                        holder.itemView.context.getResources().getDisplayMetrics().widthPixels;
+                        holder.itemView.context.resources.displayMetrics.widthPixels;
                     val aspectRation = resource.intrinsicHeight
                         .toFloat() / resource.intrinsicWidth.toFloat()
 
-                    val generatedImageHeight = Math.round(width * aspectRation)
+                    val generatedImageHeight = (width * aspectRation).roundToInt()
 
                     val layoutParams = ConstraintLayout.LayoutParams(
                         width, generatedImageHeight

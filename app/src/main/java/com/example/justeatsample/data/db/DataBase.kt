@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [MenuItemDbModel::class], version = 4)
+@Database(entities = [MenuItemDbModel::class], version = 5)
 abstract class DataBase : RoomDatabase(){
     abstract fun dataBaseDao(): Dao
 }

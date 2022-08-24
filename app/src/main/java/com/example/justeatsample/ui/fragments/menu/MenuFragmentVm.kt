@@ -26,7 +26,6 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
     private var filterTag: Restaurant.SortingValuesEnum? = null
 
     fun getList() {
-        Log.i(TAG, "getList: ")
         viewModelScope.launch {
             repository.getList().collect() {
                 if (it is ResponseState.Success) {

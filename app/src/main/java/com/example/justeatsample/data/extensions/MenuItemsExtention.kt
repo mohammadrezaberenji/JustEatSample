@@ -4,7 +4,6 @@ import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortingValues
 import com.example.justeatsample.data.source.remote.apiModel.MenuResp
-import com.example.justeatsample.data.source.remote.apiModel.RestaurantResp
 import com.example.justeatsample.data.source.remote.apiModel.SortingValuesResp
 
 

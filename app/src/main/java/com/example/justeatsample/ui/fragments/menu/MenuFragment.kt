@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ethanhua.skeleton.Skeleton
 import com.example.justeatsample.R
 import com.example.justeatsample.data.source.ResponseState
 import com.example.justeatsample.databinding.FragmentMenuBinding
@@ -22,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MenuFragment : Fragment() {
 
-    private val TAG = MenuFragment::class.java.simpleName
 
     private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
@@ -99,9 +96,7 @@ class MenuFragment : Fragment() {
                 }
 
                 is ResponseState.Loading -> {
-//                    val skeleton = Skeleton.bind(binding.recyclerView)
-//                        .load(R.layout.menu_item_adapter)
-//                    skeleton.show()
+
 
                 }
 
@@ -110,10 +105,8 @@ class MenuFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        Log.i(TAG, "initRecyclerView: ")
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-        Log.i(TAG, "initRecyclerView: items")
         adapter.setList(viewModel.listOfRestaurants)
 
 

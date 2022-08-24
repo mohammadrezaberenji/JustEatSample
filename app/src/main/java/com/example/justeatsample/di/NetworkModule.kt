@@ -72,13 +72,4 @@ object NetworkModule {
     @Provides
     fun provideRepositoryImp(dao: Dao, webService: WebService) =
         RepositoryImp(webService = webService, dao = dao) as Repository
-
-//    @Module
-//    @InstallIn(ViewModelComponent::class)
-//    abstract class RepositoryModule {
-//
-//        @Binds
-//        abstract fun bindRepository(repository: Repository): RepositoryImp
-//    }
-
 }

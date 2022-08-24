@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/cardItem"
+    app:cardBackgroundColor="@color/back_ground_color"
     android:layout_height="wrap_content"
     app:cardCornerRadius="0dp">
 
@@ -20,11 +21,11 @@
             android:layout_marginEnd="8dp"
             android:scaleY="1"
             android:src="@drawable/heart_1_"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="@color/back_ground_color"
             app:borderWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black" />
+            app:tint="@color/text_color" />
 
         <ImageView
             android:id="@+id/menuIv"
@@ -50,7 +51,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            app:cardBackgroundColor="@color/ultra_light_orange"
+            app:cardBackgroundColor="@color/ultra_light_background"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +72,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
 
                 <TextView

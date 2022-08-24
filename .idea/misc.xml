@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/react_half_top.xml" value="0.213" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.15" />
         <entry key="app/src/main/res/layout/detail_item_adapter.xml" value="0.5294906166219839" />
         <entry key="app/src/main/res/layout/fragment_details_page.xml" value="0.3329479768786127" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.14895833333333333" />

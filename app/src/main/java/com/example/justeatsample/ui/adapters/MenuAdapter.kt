@@ -101,7 +101,7 @@ class MenuAdapter(
                 )
             )
             holder.binding.likeBtn.imageTintList =
-                ContextCompat.getColorStateList(holder.itemView.context, R.color.black)
+                ContextCompat.getColorStateList(holder.itemView.context, R.color.text_color)
         }
 
         holder.binding.distanceTv.text =

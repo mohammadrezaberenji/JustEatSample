@@ -2,7 +2,6 @@ package com.example.justeatsample.ui.fragments.details
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,6 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class DetailsPageFragment : Fragment() {
 
-    private val TAG = DetailsPageFragment::class.java.simpleName
     private var _binding: FragmentDetailsPageBinding? = null
     private val binding get() = _binding!!
     private val args: DetailsPageFragmentArgs by navArgs()
@@ -55,7 +53,6 @@ class DetailsPageFragment : Fragment() {
     }
 
     private fun getArgumentsAndPassToViewModel() {
-        Log.i(TAG, "getArgumentsAndPassToViewModel: ${args.restaurant} ")
         makePairsOfModel(args.restaurant)
     }
 

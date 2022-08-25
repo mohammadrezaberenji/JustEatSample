@@ -1,7 +1,6 @@
 package com.example.justeatsample.ui.bottomSheets
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ class SortingValuesBottomSheet(
 ) :
     BaseBottomSheetDialog() {
 
-    private val TAG = SortingValuesBottomSheet::class.java.simpleName
     private var _binding: SortingValuesBottomSheetBinding? = null
     private val binding get() = _binding!!
     private var selectedFilterPositionInList: Int = -1
@@ -42,7 +40,6 @@ class SortingValuesBottomSheet(
 
     private fun setUpView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        Log.i("TAG", "setUpView: item last position : $selectedFilterPositionInList")
         adapter.setList(sortingValues)
         binding.recyclerView.adapter = adapter
         binding.confirmBtn.setOnClickListener {
@@ -60,20 +57,17 @@ class SortingValuesBottomSheet(
     }
 
     private fun onItemClickInRv(position: Int) {
-        Log.i(TAG, "onItemClickInRv: ")
         selectedFilterPositionInList = position
         applyChangesToList(position)
 
     }
 
     private fun applyChangesToList(position: Int) {
-        Log.i(TAG, "applyChangesToList: ")
         val copyOfList = ArrayList<SortValueItem>()
         copyOfList.addAll(sortingValues)
 
 
         val index = copyOfList.indexOf(copyOfList.find { it.isSelected })
-        Log.i(TAG, "findIndexOfSelectedFilter: index : $index")
 
         copyOfList[index] = SortValueItem(
             sortingValuesEnum = copyOfList.get(index).sortingValuesEnum,
@@ -81,8 +75,6 @@ class SortingValuesBottomSheet(
             name = copyOfList.get(index).name
         )
 
-        Log.i(TAG, "onItemClickInRv: index : $index ")
-        Log.i(TAG, "onItemClickInRv: item list position : $selectedFilterPositionInList")
         copyOfList[position] = SortValueItem(
             sortingValuesEnum = sortingValues.get(position).sortingValuesEnum,
             isSelected = true,

@@ -1,6 +1,5 @@
 package com.example.justeatsample.ui.fragments.menu
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -112,8 +111,6 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
 
             else -> {}
         }
-        Log.i(TAG, "filterList: favorites : $favorites")
-        Log.i(TAG, "filterList: un fave : $unFavorites")
         finalList.addAll(favorites)
         finalList.addAll(unFavorites)
 

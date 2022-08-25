@@ -11,7 +11,7 @@
  
 -There is some modifications to the original json such as adding image url and uuid.
 
--- Image url added to each item of JSON for better UI. Id also added to each item for finding a best solution to like the item , save and apply sort values.
+-Image url added to each item of JSON for better UI. Id also added to each item for finding a best solution to like the item , save and apply sort values.
 
 -The response from mock api for the first time is from the following mock address: 
 

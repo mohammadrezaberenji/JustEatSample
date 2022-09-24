@@ -5,6 +5,9 @@
     <style name="Theme.MySplash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/orange</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/splash</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:ignore="NewApi">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.MyApp</item>
     </style>
 
@@ -19,6 +22,7 @@
         <item name="colorOnSecondary">@color/text_color</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/text_color</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
     </style>
 
 

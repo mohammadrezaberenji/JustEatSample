@@ -1,9 +1,10 @@
 package com.example.justeatsample.data.source.repository
 
+import android.util.Log
+import com.example.justeatsample.ResponseState
 import com.example.justeatsample.data.db.Dao
 import com.example.justeatsample.data.db.MenuItemDbModel
-import com.example.justeatsample.data.extensions.toMenuItemsEntity
-import com.example.justeatsample.data.source.ResponseState
+import com.example.justeatsample.data.extension.toMenuItemsEntity
 import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortingValues
@@ -22,9 +23,9 @@ class RepositoryImp @Inject constructor(private val webService: WebService, priv
     override suspend fun getList() = flow<ResponseState<MenuItemsEntity>> {
         try {
             emit(ResponseState.Loading)
-            if (getItemsFromDb().isNotEmpty()) {
+            if (false) {
 //                Log.i(TAG, "getList: if dao is not empty ")
-                emit(ResponseState.Success(MenuItemsEntity(getItemsFromDb())))
+                emit(ResponseState.Success(MenuItemsEntity(arrayListOf())))
             } else {
                 val response = webService.getList()
                 if (response.isSuccessful) {
@@ -108,7 +109,7 @@ class RepositoryImp @Inject constructor(private val webService: WebService, priv
     }
 
     override suspend fun updateItem(boolean: Boolean, id: String) {
-//        Log.i(TAG, "updateItem:  ")
+        Log.i(TAG, "updateItem:  ")
         dao.update(boolean, id)
 
     }

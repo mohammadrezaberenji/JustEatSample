@@ -1,10 +1,12 @@
 package com.example.justeatsample.di
 
+import android.os.Build
 import com.example.justeatsample.BuildConfig
 import com.example.justeatsample.data.db.Dao
 import com.example.justeatsample.data.source.remote.webService.WebService
-import com.example.justeatsample.data.source.repository.RepositoryImp
 import com.example.justeatsample.data.source.repository.Repository
+import com.example.justeatsample.data.source.repository.RepositoryImp
+import com.example.justeatsample.domain.GetMenuUseCase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -33,8 +35,8 @@ object NetworkModule {
     @Provides
     fun getHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level =
-            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         return interceptor
     }
 
@@ -56,7 +58,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl("https://mocki.io/v1/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
     }
@@ -70,6 +72,15 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRepositoryImp(dao: Dao, webService: WebService) =
-        RepositoryImp(webService = webService, dao = dao) as Repository
+    fun provideRepositoryImp(webService: WebService, dao: Dao): RepositoryImp {
+        return RepositoryImp(webService, dao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUseCase(repositoryImp: RepositoryImp) : GetMenuUseCase {
+        return GetMenuUseCase(repositoryImp)
+    }
+
+
 }

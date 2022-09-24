@@ -9,12 +9,13 @@ import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortValueItem
 import com.example.justeatsample.data.source.repository.Repository
+import com.example.justeatsample.domain.GetMenuUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MenuFragmentVm @Inject constructor(private val repository: Repository) : ViewModel() {
+class MenuFragmentVm @Inject constructor(private val useCase: GetMenuUseCase) : ViewModel() {
 
     private val TAG = MenuFragmentVm::class.java.simpleName
 
@@ -22,110 +23,40 @@ class MenuFragmentVm @Inject constructor(private val repository: Repository) : V
     val items: LiveData<ResponseState<MenuItemsEntity>> = _items
     var listOfRestaurants = ArrayList<Restaurant>()
     var listOfSortValues = ArrayList<SortValueItem>()
-    private var filterTag: Restaurant.SortingValuesEnum? = null
 
     fun getList() {
         viewModelScope.launch {
-            repository.getList().collect() {
-                if (it is ResponseState.Success) {
-                    listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
-                    listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
-                    _items.postValue(ResponseState.Success(data = it.data))
-                } else {
-                    _items.postValue(it)
-
+            useCase.getMenu().collect() {
+//                if (it is ResponseState.Success) {
+//
+//                    _items.postValue(ResponseState.Success(data = it.data))
+//                } else {
+////                    _items.postValue(it)
+//
+//                }
+//            }
+                if (it is com.example.justeatsample.ResponseState.Success) {
+                    listOfRestaurants = it.data!!
+//                    _items.postValue(it)
                 }
+
+
             }
+        }
+
+    }
+
+    fun filterList(): ArrayList<Restaurant> {
+        return useCase.filterList()
+    }
+
+    fun updateModel(boolean: Boolean, id: String) {
+        viewModelScope.launch {
+            useCase.updateModel(boolean, id)
         }
     }
 
     fun applyChangesToSortList(position: Int) {
-        for (index in 0 until listOfSortValues.size) {
-            if (index != position) {
-                listOfSortValues[index] = SortValueItem(
-                    sortingValuesEnum = listOfSortValues[index].sortingValuesEnum,
-                    isSelected = false,
-                    name = listOfSortValues[index].name
-                )
-            }
-        }
-
-        filterTag = listOfSortValues[position].sortingValuesEnum
-
-        listOfSortValues[position] =
-            SortValueItem(
-                sortingValuesEnum = listOfSortValues[position].sortingValuesEnum,
-                isSelected = true,
-                listOfSortValues[position].name
-            )
-    }
-
-    fun filterList(): ArrayList<Restaurant> {
-
-        val finalList = ArrayList<Restaurant>()
-
-        val favorites = listOfRestaurants.filter { it.isFavorite } as ArrayList
-
-        val unFavorites = listOfRestaurants.filter { !it.isFavorite } as ArrayList
-
-        when (filterTag) {
-            Restaurant.SortingValuesEnum.BEST_MATCH -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.bestMatch })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.bestMatch })
-
-            }
-            Restaurant.SortingValuesEnum.AVERAGE_PRICE -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.averageProductPrice })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.averageProductPrice })
-            }
-
-            Restaurant.SortingValuesEnum.DELIVERY_COST -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.deliveryCosts })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.deliveryCosts })
-            }
-
-            Restaurant.SortingValuesEnum.DISTANCE -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.distance })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.distance })
-            }
-
-            Restaurant.SortingValuesEnum.MIN_COST -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.minCost })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenBy { it.sortingValues.minCost })
-            }
-
-            Restaurant.SortingValuesEnum.NEW -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.newest })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.newest })
-            }
-
-            Restaurant.SortingValuesEnum.POPULAR -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.popularity })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.popularity })
-            }
-
-            Restaurant.SortingValuesEnum.RATE -> {
-                favorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.ratingAverage })
-                unFavorites.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.ratingAverage })
-            }
-
-            else -> {}
-        }
-        finalList.addAll(favorites)
-        finalList.addAll(unFavorites)
-
-        listOfRestaurants = finalList
-
-        return listOfRestaurants
-
-    }
-
-
-
-    fun updateModel(boolean: Boolean, id: String) {
-        viewModelScope.launch {
-            repository.updateItem(boolean, id)
-
-        }
+        useCase.applyChanges(position)
     }
 }

@@ -19,6 +19,7 @@
         <item name="colorOnSecondary">@color/text_color</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/back_ground_color</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
     </style>
 
     <style name="BtnPrimaryStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">

@@ -24,22 +24,19 @@ class RepositoryImp @Inject constructor(private val webService: WebService, priv
         try {
             Log.i(TAG, "getList: ")
             emit(ResponseState.Loading)
-            if (false) {
+            if (getItemsFromDb().isNotEmpty()) {
 //                Log.i(TAG, "getList: if dao is not empty ")
-//                emit(ResponseState.Success(MenuItemsEntity(arrayListOf())))
+                emit(ResponseState.Success(MenuItemsEntity(getItemsFromDb())))
             } else {
                 val response = webService.getList()
                 if (response.isSuccessful) {
-                    Log.i(
-                        TAG,
-                        "getList: if response is success : body :${
-                            response.body()?.toMenuItemsEntity()
-                        } "
+                    val body = response.body()?.toMenuItemsEntity()
+                    getItemsFromListAndInsertInDataBase(
+                        response.body()?.toMenuItemsEntity()?.restaurants ?: arrayListOf()
                     )
-//                    getItemsFromListAndInsertInDataBase(
-//                        response.body()?.toMenuItemsEntity()?.restaurants ?: arrayListOf()
-//                    )
-                    emit(ResponseState.Success(response.body()?.toMenuItemsEntity()))
+
+                    Log.i(TAG, "getList from repo : body : $body")
+                    emit(ResponseState.Success(body))
                 } else {
                     emit(ResponseState.Error())
                 }
@@ -51,10 +48,6 @@ class RepositoryImp @Inject constructor(private val webService: WebService, priv
             emit(ResponseState.Error())
         }
     }
-
-//    fun getList() = flow<ResponseState<MenuItemsEntity>> {
-//
-//    }
 
 
     private suspend fun getItemsFromListAndInsertInDataBase(arrayList: ArrayList<Restaurant>) {

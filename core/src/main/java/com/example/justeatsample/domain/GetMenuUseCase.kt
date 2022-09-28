@@ -22,49 +22,22 @@ class GetMenuUseCase @Inject constructor(private val repositoryImp: RepositoryIm
     private var listOfSortValues = ArrayList<SortValueItem>()
     private var filterTag: Restaurant.SortingValuesEnum? = null
     private val TAG = GetMenuUseCase::class.java.simpleName
-    private val dispatcher = Dispatchers.IO
-    private val _stateFlow = MutableSharedFlow<ArrayList<Restaurant>>(replay = 1)
-    val stategetFlow: SharedFlow<ArrayList<Restaurant>> = _stateFlow
 
 
     suspend fun getMenu() = flow<ResponseState<ArrayList<Restaurant>>> {
         Log.i(TAG, "getMenu: ")
         repositoryImp.getList().collect {
-            Log.i(TAG, "getMenu: ")
-            listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
-            listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
-            emit(ResponseState.Success(listOfRestaurants))
-//            _stateFlow.emit(listOfRestaurants)
-//            Log.i(TAG, "getMenu: list : ${it.data?.getSortedList()?.size} ")
+            Log.i(TAG, "getMenu: ${it.data}")
+            if (it is ResponseState.Success) {
+                listOfRestaurants = getSortedList(it.data?.restaurants ?: arrayListOf())
+                listOfSortValues = getArrayListOfSortingValues()
+                emit(ResponseState.Success(listOfRestaurants))
+
+            }
         }
 
 
     }
-
-//    suspend operator fun invoke(): ResponseState<ArrayList<Restaurant>> {
-//        withContext(dispatcher) {
-//            repositoryImp.getList().collect {
-//                Log.i(TAG, "invoke: ")
-//                listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
-//                listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
-//                response = ResponseState.Success(listOfRestaurants)
-//            }
-//        }
-//
-//        return response
-//
-//    }
-
-//    suspend fun getMenu() = channelFlow<ResponseState<ArrayList<Restaurant>>> {
-//        repositoryImp.getList().collectLatest {
-//            listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
-//            listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
-//            Log.i(TAG, "getMenu: list : ${it.data?.getSortedList()?.size} ")
-//
-//            send(ResponseState.Success(listOfRestaurants))
-//
-//        }
-//    }
 
 
     fun filterList(): ArrayList<Restaurant> {
@@ -152,5 +125,87 @@ class GetMenuUseCase @Inject constructor(private val repositoryImp: RepositoryIm
                 isSelected = true,
                 listOfSortValues[position].name
             )
+    }
+
+
+    fun getSortedList(restaurants: ArrayList<Restaurant>): ArrayList<Restaurant> {
+        val finalList = ArrayList<Restaurant>()
+
+        val list = restaurants.filter { it.isFavorite } as ArrayList
+        list.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.bestMatch })
+
+        val others = restaurants.filter { !it.isFavorite } as ArrayList
+        others.sortWith(compareBy<Restaurant> { it.getStatus() }.thenByDescending { it.sortingValues.bestMatch })
+
+
+        if (list.isNotEmpty())
+            finalList.addAll(list)
+        if (others.isNotEmpty())
+            finalList.addAll(others)
+        Log.i("TAG", "getSortedList: other : final list :${finalList.size}")
+
+        return finalList
+    }
+
+    fun getArrayListOfSortingValues(): ArrayList<SortValueItem> {
+        val list = ArrayList<SortValueItem>()
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.BEST_MATCH,
+                name = "best match",
+                isSelected = true
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.AVERAGE_PRICE,
+                name = "average price",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.DELIVERY_COST,
+                name = "delivery costs",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.DISTANCE,
+                name = "distance",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.MIN_COST,
+                name = "min cost",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.NEW,
+                name = "newest",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.POPULAR,
+                name = "popularity",
+                isSelected = false
+            )
+        )
+        list.add(
+            SortValueItem(
+                Restaurant.SortingValuesEnum.RATE,
+                name = "rating average",
+                isSelected = false
+            )
+        )
+
+        return list
     }
 }

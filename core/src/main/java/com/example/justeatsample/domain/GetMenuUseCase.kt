@@ -1,14 +1,18 @@
 package com.example.justeatsample.domain
 
 import android.nfc.Tag
+import android.util.Log
 import com.example.justeatsample.ResponseState
 import com.example.justeatsample.data.source.local_models.MenuItemsEntity
 import com.example.justeatsample.data.source.local_models.Restaurant
 import com.example.justeatsample.data.source.local_models.SortValueItem
 import com.example.justeatsample.data.source.repository.RepositoryImp
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.internal.ChannelFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetMenuUseCase @Inject constructor(private val repositoryImp: RepositoryImp) {
@@ -17,18 +21,53 @@ class GetMenuUseCase @Inject constructor(private val repositoryImp: RepositoryIm
     private var listOfRestaurants = ArrayList<Restaurant>()
     private var listOfSortValues = ArrayList<SortValueItem>()
     private var filterTag: Restaurant.SortingValuesEnum? = null
+    private val TAG = GetMenuUseCase::class.java.simpleName
+    private val dispatcher = Dispatchers.IO
+    private val _stateFlow = MutableSharedFlow<ArrayList<Restaurant>>(replay = 1)
+    val stategetFlow: SharedFlow<ArrayList<Restaurant>> = _stateFlow
 
 
     suspend fun getMenu() = flow<ResponseState<ArrayList<Restaurant>>> {
+        Log.i(TAG, "getMenu: ")
         repositoryImp.getList().collect {
-            listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
+            Log.i(TAG, "getMenu: ")
             listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
+            listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
             emit(ResponseState.Success(listOfRestaurants))
+//            _stateFlow.emit(listOfRestaurants)
+//            Log.i(TAG, "getMenu: list : ${it.data?.getSortedList()?.size} ")
         }
+
+
     }
 
+//    suspend operator fun invoke(): ResponseState<ArrayList<Restaurant>> {
+//        withContext(dispatcher) {
+//            repositoryImp.getList().collect {
+//                Log.i(TAG, "invoke: ")
+//                listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
+//                listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
+//                response = ResponseState.Success(listOfRestaurants)
+//            }
+//        }
+//
+//        return response
+//
+//    }
 
-     fun filterList(): ArrayList<Restaurant> {
+//    suspend fun getMenu() = channelFlow<ResponseState<ArrayList<Restaurant>>> {
+//        repositoryImp.getList().collectLatest {
+//            listOfRestaurants = it.data?.getSortedList() ?: arrayListOf()
+//            listOfSortValues = it.data?.getArrayListOfSortingValues() ?: arrayListOf()
+//            Log.i(TAG, "getMenu: list : ${it.data?.getSortedList()?.size} ")
+//
+//            send(ResponseState.Success(listOfRestaurants))
+//
+//        }
+//    }
+
+
+    fun filterList(): ArrayList<Restaurant> {
 
         val finalList = ArrayList<Restaurant>()
 

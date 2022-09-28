@@ -22,16 +22,23 @@ class RepositoryImp @Inject constructor(private val webService: WebService, priv
 
     override suspend fun getList() = flow<ResponseState<MenuItemsEntity>> {
         try {
+            Log.i(TAG, "getList: ")
             emit(ResponseState.Loading)
             if (false) {
 //                Log.i(TAG, "getList: if dao is not empty ")
-                emit(ResponseState.Success(MenuItemsEntity(arrayListOf())))
+//                emit(ResponseState.Success(MenuItemsEntity(arrayListOf())))
             } else {
                 val response = webService.getList()
                 if (response.isSuccessful) {
-                    getItemsFromListAndInsertInDataBase(
-                        response.body()?.toMenuItemsEntity()?.restaurants ?: arrayListOf()
+                    Log.i(
+                        TAG,
+                        "getList: if response is success : body :${
+                            response.body()?.toMenuItemsEntity()
+                        } "
                     )
+//                    getItemsFromListAndInsertInDataBase(
+//                        response.body()?.toMenuItemsEntity()?.restaurants ?: arrayListOf()
+//                    )
                     emit(ResponseState.Success(response.body()?.toMenuItemsEntity()))
                 } else {
                     emit(ResponseState.Error())

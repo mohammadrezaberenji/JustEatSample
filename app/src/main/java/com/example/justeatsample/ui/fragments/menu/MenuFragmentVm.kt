@@ -1,5 +1,6 @@
 package com.example.justeatsample.ui.fragments.menu
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,9 @@ import com.example.justeatsample.data.source.local_models.SortValueItem
 import com.example.justeatsample.data.source.repository.Repository
 import com.example.justeatsample.domain.GetMenuUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,30 +23,28 @@ class MenuFragmentVm @Inject constructor(private val useCase: GetMenuUseCase) : 
 
     private val TAG = MenuFragmentVm::class.java.simpleName
 
-    private val _items = MutableLiveData<ResponseState<MenuItemsEntity>>()
-    val items: LiveData<ResponseState<MenuItemsEntity>> = _items
+    private val _items = MutableLiveData<ResponseState<ArrayList<Restaurant>>>()
+    val items: LiveData<ResponseState<ArrayList<Restaurant>>> = _items
     var listOfRestaurants = ArrayList<Restaurant>()
     var listOfSortValues = ArrayList<SortValueItem>()
 
     fun getList() {
+        Log.i(TAG, "getList: from view model ")
         viewModelScope.launch {
-            useCase.getMenu().collect() {
-//                if (it is ResponseState.Success) {
-//
-//                    _items.postValue(ResponseState.Success(data = it.data))
-//                } else {
-////                    _items.postValue(it)
-//
-//                }
-//            }
-                if (it is com.example.justeatsample.ResponseState.Success) {
-                    listOfRestaurants = it.data!!
-//                    _items.postValue(it)
-                }
-
-
+            useCase.getMenu().collect {
+                Log.i(TAG, "getList: get get list : ${it.data}")
+                listOfRestaurants = it.data!!
+                _items.postValue(ResponseState.Success(listOfRestaurants))
             }
+//            delay(3000)
+//            useCase.stategetFlow.collect {
+//                Log.i(TAG, "getList: list of items $it")
+//                listOfRestaurants = it
+//                _items.postValue(ResponseState.Success(it))
+//            }
+
         }
+
 
     }
 

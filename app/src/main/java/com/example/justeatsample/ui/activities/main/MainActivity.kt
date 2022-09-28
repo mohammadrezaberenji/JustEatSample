@@ -23,15 +23,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
          splash = installSplashScreen()
-        splash.setKeepOnScreenCondition { true }
+//        splash.setKeepOnScreenCondition { true }
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        GlobalScope.launch {
-            delay(3000)
-            splash.setKeepOnScreenCondition { false }
-
-        }
+//        GlobalScope.launch {
+//            delay(3000)
+//            splash.setKeepOnScreenCondition { false }
+//
+//        }
 
     }
 

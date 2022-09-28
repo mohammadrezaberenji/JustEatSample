@@ -9,6 +9,7 @@ import com.example.justeatsample.data.source.repository.RepositoryImp
 import com.example.justeatsample.domain.GetMenuUseCase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,17 +71,13 @@ object NetworkModule {
 
     }
 
-    @Singleton
-    @Provides
-    fun provideRepositoryImp(webService: WebService, dao: Dao): RepositoryImp {
-        return RepositoryImp(webService, dao)
-    }
+//    @Singleton
+//    @Provides
+//    fun provideRepositoryImp(webService: WebService, dao: Dao): RepositoryImp {
+//        return RepositoryImp(webService, dao)
+//    }
 
-    @Singleton
-    @Provides
-    fun provideUseCase(repositoryImp: RepositoryImp) : GetMenuUseCase {
-        return GetMenuUseCase(repositoryImp)
-    }
+
 
 
 }
